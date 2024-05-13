@@ -1,4 +1,4 @@
-export declare type NetworkName = 'bitcoin' | 'testnet' | 'bitcoincash' | 'bitcoincashTestnet' | 'ecash' | 'ecashTest' | 'bitcoingold' | 'bitcoingoldTestnet' | 'bitcoinsv' | 'bitcoinsvTestnet' | 'dash' | 'dashTest' | 'dogecoin' | 'dogecoinTest' | 'litecoin' | 'litecoinTest' | 'zcash' | 'zcashTest';
+export declare type NetworkName = 'bitcoin' | 'testnet' | 'bitcoincash' | 'bitcoincashTestnet' | 'ecash' | 'ecashTest' | 'bitcoingold' | 'bitcoingoldTestnet' | 'bitcoinsv' | 'bitcoinsvTestnet' | 'dash' | 'dashTest' | 'dogecoin' | 'dogecoinTest' | 'litecoin' | 'litecoinTest' | 'zcash' | 'zcashTest' | 'bithereum' | 'safecoin' | 'komodo' | 'zelcash' | 'flux' | 'zero' | 'snowgem' | 'gemlink' | 'commercium' | 'zclassic' | 'bzedge' | 'genesis' | 'bitcoinzero' | 'bitcoinz' | 'hush' | 'ravencoin' | 'bitcore' | 'zcoin' | 'axe' | 'digibyte' | 'sinovate' | 'ilcoin' | 'raptoreum' | 'vertcoin' | 'fluxtestnet' | 'clore';
 export declare type Network = {
     messagePrefix: string;
     pubKeyHash: number;
@@ -79,6 +79,11 @@ export declare function isECash(network: Network): boolean;
  * @returns {boolean} true iff network is bitcoingold
  */
 export declare function isBitcoinGold(network: Network): boolean;
+/**
+ * @param {Network} network
+ * @returns {boolean} true iff network is bithereum
+ */
+export declare function isBithereum(network: Network): boolean;
 /**
  * @param {Network} network
  * @returns {boolean} true iff network is bitcoinsv or bitcoinsvTestnet
