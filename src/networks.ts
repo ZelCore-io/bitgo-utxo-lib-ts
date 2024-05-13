@@ -29,6 +29,7 @@ const coins = {
   BSV: 'bsv',
   BTC: 'btc',
   BTG: 'btg',
+  BTH: 'bth',
   LTC: 'ltc',
   ZEC: 'zec',
   DASH: 'dash',
@@ -53,7 +54,33 @@ export type NetworkName =
   | 'litecoin'
   | 'litecoinTest'
   | 'zcash'
-  | 'zcashTest';
+  | 'zcashTest'
+  | 'bithereum'
+  | 'safecoin'
+  | 'komodo'
+  | 'zelcash'
+  | 'flux'
+  | 'zero'
+  | 'snowgem'
+  | 'gemlink'
+  | 'commercium'
+  | 'zclassic'
+  | 'bzedge'
+  | 'genesis'
+  | 'bitcoinzero'
+  | 'bitcoinz'
+  | 'hush'
+  | 'ravencoin'
+  | 'bitcore'
+  | 'zcoin'
+  | 'axe'
+  | 'digibyte'
+  | 'sinovate'
+  | 'ilcoin'
+  | 'raptoreum'
+  | 'vertcoin'
+  | 'fluxtestnet'
+  | 'clore';
 
 export type Network = {
   messagePrefix: string;
@@ -302,6 +329,295 @@ export const networks: Record<NetworkName, Network> = {
     wif: 0xef,
     coin: coins.ZEC,
   },
+  komodo: {
+    messagePrefix: '\x18Komodo Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x3c,
+    scriptHash: 0x55,
+    wif: 0xbc,
+    coin: coins.ZEC
+  },
+  safecoin: {
+    messagePrefix: '\x18Safecoin Signed Message:\n',
+    bip32: {
+      public: 0x0488b21f,
+      private: 0x0488ade5
+    },
+    pubKeyHash: 0x3d,
+    scriptHash: 0x56,
+    wif: 0xbd,
+    coin: coins.ZEC
+  },
+  bithereum: {
+    messagePrefix: '\x18Bithereum Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x19,
+    scriptHash: 0x28,
+    wif: 0x80,
+    coin: coins.BTH,
+    forkId: 0x55, /* 85 */
+  },
+  zelcash: {
+    messagePrefix: '\x18ZelCash Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x1cb8,
+    scriptHash: 0x1cbd,
+    wif: 0x80,
+    coin: coins.ZEC
+  },
+  flux: {
+    messagePrefix: '\x18ZelCash Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x1cb8,
+    scriptHash: 0x1cbd,
+    wif: 0x80,
+    coin: coins.ZEC
+  },
+  zero: {
+    messagePrefix: '\x18Zero Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x1cb8,
+    scriptHash: 0x1cbd,
+    wif: 0x80,
+    coin: coins.ZEC
+  },
+  snowgem: {
+    messagePrefix: '\x18Snowgem Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x1c28,
+    scriptHash: 0x1c2d,
+    wif: 0x80,
+    coin: coins.ZEC
+  },
+  gemlink: {
+    messagePrefix: '\x18Snowgem Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x1c28,
+    scriptHash: 0x1c2d,
+    wif: 0x80,
+    coin: coins.ZEC
+  },
+  commercium: {
+    messagePrefix: '\x18Commercium Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x1c,
+    scriptHash: 0x33,
+    wif: 0x8c,
+    coin: coins.ZEC
+  },
+  zclassic: {
+    messagePrefix: '\x18Zclassic Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x1cb8,
+    scriptHash: 0x1cbd,
+    wif: 0x80,
+    coin: coins.ZEC
+  },
+  bzedge: {
+    messagePrefix: '\x18Bzedge Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x1cb8,
+    scriptHash: 0x1cbd,
+    wif: 0x80,
+    coin: coins.ZEC
+  },
+  genesis: {
+    messagePrefix: "\x18Genesis Signed Message: \n",
+    bip32: {
+      public: 0x53414645,
+      private: 0x53616665,
+    },
+    pubKeyHash: 0x1c,
+    scriptHash: 0x3f,
+    wif: 0x30,
+    coin: coins.BTC
+  },
+  bitcoinzero: {
+    messagePrefix: "\x18BitcoinZero Signed Message: \n",
+    bip32: {
+      public:  0x0488b21e,
+      private: 0x0488ade4,
+    },
+    pubKeyHash: 0x4b,
+    scriptHash: 0x22,
+    wif: 0xd2,
+    coin: coins.BTC
+  },
+  bitcoinz: {
+    messagePrefix: '\x18BitcoinZ Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x1cb8,
+    scriptHash: 0x1cbd,
+    wif: 0x80,
+    coin: coins.ZEC
+  },
+  hush: {
+    messagePrefix: '\x18Hush Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x1cb8,
+    scriptHash: 0x1cbd,
+    wif: 0x80,
+    coin: coins.BTC
+  },
+  ravencoin: {
+    messagePrefix: "\x18Ravencoin Signed Message: \n",
+    bip32: {
+      public:  0x0488b21e,
+      private: 0x0488ade4,
+    },
+    pubKeyHash: 0x3c,
+    scriptHash: 0x7a,
+    wif: 0x80,
+    coin: coins.BTC
+  },
+  bitcore: {
+    messagePrefix: "\x18Bitcore Signed Message: \n",
+    bip32: {
+      public:  0x0488b21e,
+      private: 0x0488ade4,
+    },
+    pubKeyHash: 0x03,
+    scriptHash: 0x7d,
+    wif: 0x80,
+    coin: coins.BTC
+  },
+  zcoin: {
+    messagePrefix: "\x18Zcoin Signed Message: \n",
+    bip32: {
+      public:  0x0488b21e,
+      private: 0x0488ade4,
+    },
+    pubKeyHash: 0x52,
+    scriptHash: 0x07,
+    wif: 0xd2,
+    coin: coins.BTC
+  },
+  axe: {
+    messagePrefix: '\x19Axe Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x37, // https://dash-docs.github.io/en/developer-reference#opcodes
+    scriptHash: 0x10,
+    wif: 0xcc,
+    coin: coins.DASH
+  },
+  digibyte: {	
+    messagePrefix: '\x19Digibyte Signed Message:\n',
+    bech32: 'dgb',
+    bip32: {	
+      public: 0x0488b21e,	
+      private: 0x0488ade4	
+    },	
+    pubKeyHash: 0x1e, // https://dash-docs.github.io/en/developer-reference#opcodes	
+    scriptHash: 0x3f,	
+    wif: 0x80,	
+    coin: coins.BTC
+  },	
+  sinovate: {	
+    messagePrefix: '\x18Sinovate Signed Message:\n',	
+    bip32: {	
+      public: 0x0488b21e,	
+      private: 0x0488ade4	
+    },	
+    pubKeyHash: 0x3f, // https://dash-docs.github.io/en/developer-reference#opcodes	
+    scriptHash: 0x05,	
+    wif: 0xbf,	
+    coin: coins.BTC
+  },
+  ilcoin: {
+    messagePrefix: '\x18ILCoin Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x00,
+    scriptHash: 0x05,
+    wif: 0x80,
+    coin: coins.BTC
+  },
+  raptoreum: {
+    messagePrefix: '\x19DarkCoin Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x3c, // https://dash-docs.github.io/en/developer-reference#opcodes
+    scriptHash: 0x10,
+    wif: 0x80,
+    coin: coins.DASH
+  },
+  vertcoin: {
+    messagePrefix: '\x18Bitcoin Signed Message:\n',
+    bech32: 'vtc',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x47, // https://dash-docs.github.io/en/developer-reference#opcodes
+    scriptHash: 0x05,
+    wif: 0x80,
+    coin: coins.BTC
+  },
+  fluxtestnet: {
+    messagePrefix: '\x18ZelCash Signed Message:\n',
+    bip32: {
+      public: 0x043587cf,
+      private: 0x04358394
+    },
+    pubKeyHash: 0x1d25,
+    scriptHash: 0x1cba,
+    wif: 0xef,
+    coin: coins.ZEC
+  },
+  clore: {
+    messagePrefix: "\x18Clore Signed Message: \n",
+    bip32: {
+      public:  0x0488b21e,
+      private: 0x0488ade4,
+    },
+    pubKeyHash: 0x17,
+    scriptHash: 0x7a,
+    wif: 0x70,
+    coin: coins.BTC
+  },
 };
 
 /**
@@ -454,6 +770,14 @@ export function isECash(network: Network): boolean {
  */
 export function isBitcoinGold(network: Network): boolean {
   return getMainnet(network) === networks.bitcoingold;
+}
+
+/**
+ * @param {Network} network
+ * @returns {boolean} true iff network is bithereum
+ */
+export function isBithereum(network: Network): boolean {
+  return getMainnet(network) === networks.bithereum;
 }
 
 /**
