@@ -47,6 +47,31 @@ export function createTransactionFromBuffer<TNumber extends number | bigint = nu
     case networks.bitcoinsv:
     case networks.bitcoingold:
     case networks.dogecoin:
+    case networks.bithereum:
+    case networks.safecoin:
+    case networks.komodo:
+    case networks.zelcash:
+    case networks.flux:
+    case networks.zero:
+    case networks.snowgem:
+    case networks.gemlink:
+    case networks.commercium:
+    case networks.zclassic:
+    case networks.bzedge:
+    case networks.genesis:
+    case networks.bitcoinzero:
+    case networks.bitcoinz:
+    case networks.hush:
+    case networks.ravencoin:
+    case networks.bitcore:
+    case networks.zcoin:
+    case networks.axe:
+    case networks.digibyte:
+    case networks.sinovate:
+    case networks.ilcoin:
+    case networks.raptoreum:
+    case networks.vertcoin:
+    case networks.clore:
     case networks.ecash:
       return UtxoTransaction.fromBuffer<TNumber>(buf, false, amountType, network);
     case networks.litecoin:
@@ -94,6 +119,31 @@ export function createPsbtFromBuffer(buf: Buffer, network: Network, bip32PathsAb
     case networks.bitcoinsv:
     case networks.bitcoingold:
     case networks.dogecoin:
+    case networks.bithereum:
+    case networks.safecoin:
+    case networks.komodo:
+    case networks.zelcash:
+    case networks.flux:
+    case networks.zero:
+    case networks.snowgem:
+    case networks.gemlink:
+    case networks.commercium:
+    case networks.zclassic:
+    case networks.bzedge:
+    case networks.genesis:
+    case networks.bitcoinzero:
+    case networks.bitcoinz:
+    case networks.hush:
+    case networks.ravencoin:
+    case networks.bitcore:
+    case networks.zcoin:
+    case networks.axe:
+    case networks.digibyte:
+    case networks.sinovate:
+    case networks.ilcoin:
+    case networks.raptoreum:
+    case networks.vertcoin:
+    case networks.clore:
     case networks.ecash:
       return UtxoPsbt.fromBuffer(buf, { network, bip32PathsAbsolute });
     case networks.litecoin:
@@ -119,6 +169,31 @@ export function createPsbtFromTransaction(tx: UtxoTransaction<bigint>, prevOuts:
     case networks.bitcoinsv:
     case networks.bitcoingold:
     case networks.dogecoin:
+    case networks.bithereum:
+    case networks.safecoin:
+    case networks.komodo:
+    case networks.zelcash:
+    case networks.flux:
+    case networks.zero:
+    case networks.snowgem:
+    case networks.gemlink:
+    case networks.commercium:
+    case networks.zclassic:
+    case networks.bzedge:
+    case networks.genesis:
+    case networks.bitcoinzero:
+    case networks.bitcoinz:
+    case networks.hush:
+    case networks.ravencoin:
+    case networks.bitcore:
+    case networks.zcoin:
+    case networks.axe:
+    case networks.digibyte:
+    case networks.sinovate:
+    case networks.ilcoin:
+    case networks.raptoreum:
+    case networks.vertcoin:
+    case networks.clore:
     case networks.ecash:
       return UtxoPsbt.fromTransaction(tx, prevOuts);
     case networks.litecoin:
@@ -217,6 +292,31 @@ export function createPsbtForNetwork(psbtOpts: PsbtOpts, { version }: { version?
     case networks.bitcoinsv:
     case networks.bitcoingold:
     case networks.dogecoin:
+    case networks.bithereum:
+    case networks.safecoin:
+    case networks.komodo:
+    case networks.zelcash:
+    case networks.flux:
+    case networks.zero:
+    case networks.snowgem:
+    case networks.gemlink:
+    case networks.commercium:
+    case networks.zclassic:
+    case networks.bzedge:
+    case networks.genesis:
+    case networks.bitcoinzero:
+    case networks.bitcoinz:
+    case networks.hush:
+    case networks.ravencoin:
+    case networks.bitcore:
+    case networks.zcoin:
+    case networks.axe:
+    case networks.digibyte:
+    case networks.sinovate:
+    case networks.ilcoin:
+    case networks.raptoreum:
+    case networks.vertcoin:
+    case networks.clore:
     case networks.ecash: {
       psbt = UtxoPsbt.createPsbt(psbtOpts);
       break;
@@ -253,6 +353,31 @@ export function createTransactionBuilderForNetwork<TNumber extends number | bigi
     case networks.bitcoinsv:
     case networks.bitcoingold:
     case networks.dogecoin:
+    case networks.bithereum:
+    case networks.safecoin:
+    case networks.komodo:
+    case networks.zelcash:
+    case networks.flux:
+    case networks.zero:
+    case networks.snowgem:
+    case networks.gemlink:
+    case networks.commercium:
+    case networks.zclassic:
+    case networks.bzedge:
+    case networks.genesis:
+    case networks.bitcoinzero:
+    case networks.bitcoinz:
+    case networks.hush:
+    case networks.ravencoin:
+    case networks.bitcore:
+    case networks.zcoin:
+    case networks.axe:
+    case networks.digibyte:
+    case networks.sinovate:
+    case networks.ilcoin:
+    case networks.raptoreum:
+    case networks.vertcoin:
+    case networks.clore:
     case networks.ecash: {
       txb = new UtxoTransactionBuilder<TNumber>(network);
       break;
@@ -287,6 +412,31 @@ export function createTransactionBuilderFromTransaction<TNumber extends number |
     case networks.bitcoinsv:
     case networks.bitcoingold:
     case networks.dogecoin:
+    case networks.bithereum:
+    case networks.safecoin:
+    case networks.komodo:
+    case networks.zelcash:
+    case networks.flux:
+    case networks.zero:
+    case networks.snowgem:
+    case networks.gemlink:
+    case networks.commercium:
+    case networks.zclassic:
+    case networks.bzedge:
+    case networks.genesis:
+    case networks.bitcoinzero:
+    case networks.bitcoinz:
+    case networks.hush:
+    case networks.ravencoin:
+    case networks.bitcore:
+    case networks.zcoin:
+    case networks.axe:
+    case networks.digibyte:
+    case networks.sinovate:
+    case networks.ilcoin:
+    case networks.raptoreum:
+    case networks.vertcoin:
+    case networks.clore:
     case networks.ecash:
       return UtxoTransactionBuilder.fromTransaction<TNumber>(tx, undefined, prevOutputs);
     case networks.litecoin:

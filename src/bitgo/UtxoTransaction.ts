@@ -3,7 +3,7 @@ import * as bitcoinjs from 'bitcoinjs-lib';
 import * as varuint from 'varuint-bitcoin';
 import { toTNumber } from './tnumber';
 
-import { networks, Network, getMainnet, isBitcoinGold } from '../networks';
+import { networks, Network, getMainnet, isBitcoinGold, isBithereum } from '../networks';
 
 export function varSliceSize(slice: Buffer): number {
   const length = slice.length;
@@ -66,8 +66,10 @@ export class UtxoTransaction<TNumber extends number | bigint = number> extends b
       We also use unsigned right shift operator `>>>` to cast to UInt32
       https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Unsigned_right_shift
      */
-    if (hashType & UtxoTransaction.SIGHASH_FORKID) {
-      const forkId = isBitcoinGold(this.network) ? 79 : 0;
+    const isBthFid = isBithereum(this.network) && (hashType & 0x10); // Bithereum SIGHASH_FORKID
+    if ((hashType & UtxoTransaction.SIGHASH_FORKID) || isBthFid) {
+      let forkId = isBitcoinGold(this.network) ? 79 : 0;
+      if (isBthFid) forkId = 85; // Bithereum fork id
       return (hashType | (forkId << 8)) >>> 0;
     }
 
@@ -93,6 +95,7 @@ export class UtxoTransaction<TNumber extends number | bigint = number> extends b
       case networks.bitcoincash:
       case networks.bitcoinsv:
       case networks.bitcoingold:
+      case networks.bithereum:
       case networks.ecash:
         /*
           Bitcoin Cash supports a FORKID flag. When set, we hash using hashing algorithm
@@ -103,8 +106,8 @@ export class UtxoTransaction<TNumber extends number | bigint = number> extends b
           https://github.com/bitcoincashorg/bitcoincash.org/blob/master/spec/replay-protected-sighash.md
          */
         const addForkId = (hashType & UtxoTransaction.SIGHASH_FORKID) > 0;
-
-        if (addForkId) {
+        const isBthFid = isBithereum(this.network) && ((hashType & 0x10) > 0); // Bithereum SIGHASH_FORKID
+        if (addForkId || isBthFid) {
           if (value === undefined) {
             throw new Error(`must provide value`);
           }

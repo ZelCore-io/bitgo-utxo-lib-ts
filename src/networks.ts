@@ -679,6 +679,83 @@ export function getMainnet(network: Network): Network {
     case networks.dogecoin:
     case networks.dogecoinTest:
       return networks.dogecoin;
+
+    case networks.bithereum:
+      return networks.bithereum;
+
+    case networks.safecoin:
+      return networks.safecoin;
+
+    case networks.komodo:
+      return networks.komodo;
+
+    case networks.zelcash:
+      return networks.zelcash;
+
+    case networks.flux:
+    case networks.fluxtestnet:
+      return networks.flux;
+
+    case networks.zero:
+      return networks.zero;
+
+    case networks.snowgem:
+      return networks.snowgem;
+
+    case networks.gemlink:
+      return networks.gemlink;
+
+    case networks.commercium:
+      return networks.commercium;
+
+    case networks.zclassic:
+      return networks.zclassic;
+
+    case networks.bzedge:
+      return networks.bzedge;
+
+    case networks.genesis:
+      return networks.genesis;
+
+    case networks.bitcoinzero:
+      return networks.bitcoinzero;
+
+    case networks.bitcoinz:
+      return networks.bitcoinz;
+
+    case networks.hush:
+      return networks.hush;
+
+    case networks.ravencoin:
+      return networks.ravencoin;
+
+    case networks.bitcore:
+      return networks.bitcore;
+
+    case networks.zcoin:
+      return networks.zcoin;
+
+    case networks.axe:
+      return networks.axe;
+
+    case networks.digibyte:
+      return networks.digibyte;
+
+    case networks.sinovate:
+      return networks.sinovate;
+
+    case networks.ilcoin:
+      return networks.ilcoin;
+
+    case networks.raptoreum:
+      return networks.raptoreum;
+
+    case networks.vertcoin:
+      return networks.vertcoin;
+
+    case networks.clore:
+      return networks.clore;
+    
   }
   throw new TypeError(`invalid network`);
 }
