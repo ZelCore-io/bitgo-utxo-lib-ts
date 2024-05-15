@@ -12,6 +12,7 @@ export function varSliceSize(slice: Buffer): number {
 
 export class UtxoTransaction<TNumber extends number | bigint = number> extends bitcoinjs.Transaction<TNumber> {
   static SIGHASH_FORKID = 0x40;
+  static SIGHASH_FORKID_BTH = 0x10;
   /** @deprecated use SIGHASH_FORKID */
   static SIGHASH_BITCOINCASHBIP143 = UtxoTransaction.SIGHASH_FORKID;
 
@@ -66,7 +67,7 @@ export class UtxoTransaction<TNumber extends number | bigint = number> extends b
       We also use unsigned right shift operator `>>>` to cast to UInt32
       https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Unsigned_right_shift
      */
-    const isBthFid = isBithereum(this.network) && (hashType & 0x10); // Bithereum SIGHASH_FORKID
+    const isBthFid = isBithereum(this.network) && (hashType & UtxoTransaction.SIGHASH_FORKID_BTH); // Bithereum SIGHASH_FORKID
     if ((hashType & UtxoTransaction.SIGHASH_FORKID) || isBthFid) {
       let forkId = isBitcoinGold(this.network) ? 79 : 0;
       if (isBthFid) forkId = 85; // Bithereum fork id
@@ -106,7 +107,7 @@ export class UtxoTransaction<TNumber extends number | bigint = number> extends b
           https://github.com/bitcoincashorg/bitcoincash.org/blob/master/spec/replay-protected-sighash.md
          */
         const addForkId = (hashType & UtxoTransaction.SIGHASH_FORKID) > 0;
-        const isBthFid = isBithereum(this.network) && ((hashType & 0x10) > 0); // Bithereum SIGHASH_FORKID
+        const isBthFid = isBithereum(this.network) && ((hashType & UtxoTransaction.SIGHASH_FORKID_BTH) > 0); // Bithereum SIGHASH_FORKID
         if (addForkId || isBthFid) {
           if (value === undefined) {
             throw new Error(`must provide value`);
