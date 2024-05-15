@@ -11,8 +11,8 @@ export function varSliceSize(slice: Buffer): number {
 }
 
 export class UtxoTransaction<TNumber extends number | bigint = number> extends bitcoinjs.Transaction<TNumber> {
-  static SIGHASH_FORKID = 0x40;
-  static SIGHASH_FORKID_BTH = 0x10;
+  static readonly SIGHASH_FORKID = 0x40;
+  static readonly SIGHASH_FORKID_BTH = 0x10;
   /** @deprecated use SIGHASH_FORKID */
   static SIGHASH_BITCOINCASHBIP143 = UtxoTransaction.SIGHASH_FORKID;
 
