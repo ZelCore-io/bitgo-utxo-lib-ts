@@ -5,6 +5,7 @@ export declare function varSliceSize(slice: Buffer): number;
 export declare class UtxoTransaction<TNumber extends number | bigint = number> extends bitcoinjs.Transaction<TNumber> {
     network: Network;
     static SIGHASH_FORKID: number;
+    static SIGHASH_FORKID_BTH: number;
     /** @deprecated use SIGHASH_FORKID */
     static SIGHASH_BITCOINCASHBIP143: number;
     constructor(network: Network, transaction?: bitcoinjs.Transaction<bigint | number>, amountType?: 'bigint' | 'number');
