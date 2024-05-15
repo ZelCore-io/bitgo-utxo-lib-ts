@@ -894,7 +894,21 @@ export function isLitecoin(network: Network): boolean {
  * @returns {boolean} true iff network is zcash or zcashTest
  */
 export function isZcash(network: Network): boolean {
-  return getMainnet(network) === networks.zcash;
+  const zcashMainnets = [
+    networks.zcash,
+    networks.zelcash,
+    networks.flux,
+    networks.zero,
+    networks.snowgem,
+    networks.gemlink,
+    networks.commercium,
+    networks.zclassic,
+    networks.bzedge,
+    networks.bitcoinz,
+    networks.komodo,
+    networks.safecoin,
+  ];
+  return zcashMainnets.includes(getMainnet(network));
 }
 
 /**

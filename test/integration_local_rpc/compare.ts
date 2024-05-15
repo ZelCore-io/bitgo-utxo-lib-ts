@@ -70,19 +70,8 @@ export function normalizeParsedTransaction<TNumber extends number | bigint>(
     case networks.bitcoin:
     case networks.bitcoingold:
     case networks.bithereum:
-    case networks.safecoin:
-    case networks.komodo:
-    case networks.zelcash:
-    case networks.flux:
-    case networks.zero:
-    case networks.snowgem:
-    case networks.gemlink:
-    case networks.commercium:
-    case networks.zclassic:
-    case networks.bzedge:
     case networks.genesis:
     case networks.bitcoinzero:
-    case networks.bitcoinz:
     case networks.hush:
     case networks.ravencoin:
     case networks.bitcore:
@@ -109,6 +98,17 @@ export function normalizeParsedTransaction<TNumber extends number | bigint>(
     case networks.dogecoin:
       normalizedTx.vsize = tx.virtualSize();
       break;
+    case networks.zelcash:
+    case networks.flux:
+    case networks.zero:
+    case networks.snowgem:
+    case networks.safecoin:
+    case networks.komodo:
+    case networks.gemlink:
+    case networks.commercium:
+    case networks.zclassic:
+    case networks.bzedge:
+    case networks.bitcoinz:
     case networks.zcash:
       const zcashTx = tx as unknown as ZcashTransaction;
       normalizedTx.overwintered = !!zcashTx.overwintered;
@@ -155,19 +155,8 @@ export function normalizeRpcTransaction(tx: RpcTransaction, network: Network): N
     case networks.bitcoingold:
     case networks.dogecoin:
     case networks.bithereum:
-    case networks.safecoin:
-    case networks.komodo:
-    case networks.zelcash:
-    case networks.flux:
-    case networks.zero:
-    case networks.snowgem:
-    case networks.gemlink:
-    case networks.commercium:
-    case networks.zclassic:
-    case networks.bzedge:
     case networks.genesis:
     case networks.bitcoinzero:
-    case networks.bitcoinz:
     case networks.hush:
     case networks.ravencoin:
     case networks.bitcore:
@@ -194,6 +183,17 @@ export function normalizeRpcTransaction(tx: RpcTransaction, network: Network): N
       delete normalizedTx.proUpRevTx;
       delete normalizedTx.proUpRegTx;
       break;
+    case networks.zelcash:
+    case networks.flux:
+    case networks.zero:
+    case networks.snowgem:
+    case networks.safecoin:
+    case networks.komodo:
+    case networks.gemlink:
+    case networks.commercium:
+    case networks.zclassic:
+    case networks.bzedge:
+    case networks.bitcoinz:
     case networks.zcash:
       delete normalizedTx.authdigest;
       delete normalizedTx.valueBalanceZat;
