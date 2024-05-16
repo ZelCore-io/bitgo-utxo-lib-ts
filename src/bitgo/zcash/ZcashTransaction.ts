@@ -47,11 +47,50 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
     case 2:
       return 0;
     case 3:
-      return OVERWINTER_BRANCH_ID;
+      switch (network) {
+        case networks.komodo:
+        case networks.safecoin:
+        case networks.zelcash:
+        case networks.flux:
+        case networks.snowgem:
+        case networks.gemlink:
+        case networks.commercium:
+        case networks.bitcoinz:
+        case networks.fluxtestnet:
+          return 0x5ba81b19;
+        case networks.zero:
+          return 0x6f76727a;
+        case networks.zclassic:
+          return 0x5ba81b19;
+        case networks.bzedge:
+          return 0x6f77627a;
+        default:
+          return OVERWINTER_BRANCH_ID;
+      }
     case ZcashTransaction.VERSION4_BRANCH_CANOPY:
       // https://zips.z.cash/zip-0251
       return CANOPY_BRANCH_ID;
     case 4:
+      switch (network) {
+        case networks.komodo:
+        case networks.safecoin:
+        case networks.zelcash:
+        case networks.flux:
+        case networks.snowgem:
+        case networks.gemlink:
+        case networks.commercium:
+        case networks.bitcoinz:
+        case networks.fluxtestnet:
+          return 0x76b809bb;
+        case networks.zero:
+          return 0x7361707a;
+        case networks.zclassic:
+          return 0x930b540d;
+        case networks.bzedge:
+          return 0x736c627a;
+        default:
+          return NU5_BRANCH_ID;
+      }
     case 5:
     case ZcashTransaction.VERSION4_BRANCH_NU5:
     case ZcashTransaction.VERSION5_BRANCH_NU5:
