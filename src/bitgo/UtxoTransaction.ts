@@ -91,6 +91,17 @@ export class UtxoTransaction<TNumber extends number | bigint = number> extends b
     hashType: number
   ): Buffer {
     switch (getMainnet(this.network)) {
+      case networks.zelcash:
+      case networks.flux:
+      case networks.zero:
+      case networks.snowgem:
+      case networks.safecoin:
+      case networks.komodo:
+      case networks.gemlink:
+      case networks.commercium:
+      case networks.zclassic:
+      case networks.bzedge:
+      case networks.bitcoinz:
       case networks.zcash:
         throw new Error(`illegal state`);
       case networks.bitcoincash:
