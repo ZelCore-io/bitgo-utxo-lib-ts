@@ -495,7 +495,7 @@ export const networks: Record<NetworkName, Network> = {
     pubKeyHash: 0x1cb8,
     scriptHash: 0x1cbd,
     wif: 0x80,
-    coin: coins.BTC
+    coin: coins.ZEC
   },
   ravencoin: {
     messagePrefix: "\x18Ravencoin Signed Message: \n",

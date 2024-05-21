@@ -57,6 +57,7 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
         case networks.commercium:
         case networks.bitcoinz:
         case networks.fluxtestnet:
+        case networks.hush:
           return 0x5ba81b19;
         case networks.zero:
           return 0x6f76727a;
@@ -79,6 +80,7 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
         case networks.commercium:
         case networks.bitcoinz:
         case networks.fluxtestnet:
+        case networks.hush:
           return 0x76b809bb;
         case networks.zero:
           return 0x7361707a;
@@ -104,6 +106,7 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
         case networks.commercium:
         case networks.bitcoinz:
         case networks.fluxtestnet:
+        case networks.hush:
           return 0x76b809bb;
         case networks.zero:
           return 0x7361707a;

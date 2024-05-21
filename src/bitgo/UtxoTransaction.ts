@@ -111,6 +111,7 @@ export class UtxoTransaction<TNumber extends number | bigint = number> extends b
       case networks.zclassic:
       case networks.bzedge:
       case networks.bitcoinz:
+      case networks.hush:
       case networks.zcash:
         throw new Error(`illegal state`);
       case networks.bitcoincash:

@@ -50,7 +50,6 @@ export function createTransactionFromBuffer<TNumber extends number | bigint = nu
     case networks.bithereum:
     case networks.genesis:
     case networks.bitcoinzero:
-    case networks.hush:
     case networks.ravencoin:
     case networks.bitcore:
     case networks.zcoin:
@@ -79,6 +78,7 @@ export function createTransactionFromBuffer<TNumber extends number | bigint = nu
     case networks.zclassic:
     case networks.bzedge:
     case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash:
       return ZcashTransaction.fromBufferWithVersion<TNumber>(buf, network as ZcashNetwork, version, amountType);
   }
@@ -123,7 +123,6 @@ export function createPsbtFromBuffer(buf: Buffer, network: Network, bip32PathsAb
     case networks.bithereum:
     case networks.genesis:
     case networks.bitcoinzero:
-    case networks.hush:
     case networks.ravencoin:
     case networks.bitcore:
     case networks.zcoin:
@@ -151,6 +150,7 @@ export function createPsbtFromBuffer(buf: Buffer, network: Network, bip32PathsAb
     case networks.zclassic:
     case networks.bzedge:
     case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash:
       return ZcashPsbt.fromBuffer(buf, { network, bip32PathsAbsolute });
   }
@@ -173,7 +173,6 @@ export function createPsbtFromTransaction(tx: UtxoTransaction<bigint>, prevOuts:
     case networks.bithereum:
     case networks.genesis:
     case networks.bitcoinzero:
-    case networks.hush:
     case networks.ravencoin:
     case networks.bitcore:
     case networks.zcoin:
@@ -201,6 +200,7 @@ export function createPsbtFromTransaction(tx: UtxoTransaction<bigint>, prevOuts:
     case networks.zclassic:
     case networks.bzedge:
     case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash:
       return ZcashPsbt.fromTransaction(tx, prevOuts);
   }
@@ -227,6 +227,7 @@ export function getDefaultTransactionVersion(network: Network): number {
     case networks.zclassic:
     case networks.bzedge:
     case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash:
       return ZcashTransaction.VERSION4_BRANCH_NU5;
     default:
@@ -260,6 +261,7 @@ export function setTransactionBuilderDefaults<TNumber extends number | bigint>(
     case networks.zclassic:
     case networks.bzedge:
     case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash:
       (txb as ZcashTransactionBuilder<TNumber>).setDefaultsForVersion(network, version);
       break;
@@ -295,6 +297,7 @@ export function setPsbtDefaults(
     case networks.zclassic:
     case networks.bzedge:
     case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash:
       if (
         ![
@@ -329,7 +332,6 @@ export function createPsbtForNetwork(psbtOpts: PsbtOpts, { version }: { version?
     case networks.bithereum:
     case networks.genesis:
     case networks.bitcoinzero:
-    case networks.hush:
     case networks.ravencoin:
     case networks.bitcore:
     case networks.zcoin:
@@ -363,6 +365,7 @@ export function createPsbtForNetwork(psbtOpts: PsbtOpts, { version }: { version?
     case networks.zclassic:
     case networks.bzedge:
     case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash: {
       psbt = ZcashPsbt.createPsbt(psbtOpts);
       break;
@@ -390,7 +393,6 @@ export function createTransactionBuilderForNetwork<TNumber extends number | bigi
     case networks.bithereum:
     case networks.genesis:
     case networks.bitcoinzero:
-    case networks.hush:
     case networks.ravencoin:
     case networks.bitcore:
     case networks.zcoin:
@@ -424,6 +426,7 @@ export function createTransactionBuilderForNetwork<TNumber extends number | bigi
     case networks.zclassic:
     case networks.bzedge:
     case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash: {
       txb = new ZcashTransactionBuilder<TNumber>(network as ZcashNetwork);
       break;
@@ -450,7 +453,6 @@ export function createTransactionBuilderFromTransaction<TNumber extends number |
     case networks.bithereum:
     case networks.genesis:
     case networks.bitcoinzero:
-    case networks.hush:
     case networks.ravencoin:
     case networks.bitcore:
     case networks.zcoin:
@@ -487,6 +489,7 @@ export function createTransactionBuilderFromTransaction<TNumber extends number |
     case networks.zclassic:
     case networks.bzedge:
     case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash:
       return ZcashTransactionBuilder.fromTransaction<TNumber>(
         tx as ZcashTransaction<TNumber>,

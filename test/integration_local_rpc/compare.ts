@@ -72,7 +72,6 @@ export function normalizeParsedTransaction<TNumber extends number | bigint>(
     case networks.bithereum:
     case networks.genesis:
     case networks.bitcoinzero:
-    case networks.hush:
     case networks.ravencoin:
     case networks.bitcore:
     case networks.zcoin:
@@ -110,6 +109,7 @@ export function normalizeParsedTransaction<TNumber extends number | bigint>(
     case networks.zclassic:
     case networks.bzedge:
     case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash:
       const zcashTx = tx as unknown as ZcashTransaction;
       normalizedTx.overwintered = !!zcashTx.overwintered;
@@ -158,7 +158,6 @@ export function normalizeRpcTransaction(tx: RpcTransaction, network: Network): N
     case networks.bithereum:
     case networks.genesis:
     case networks.bitcoinzero:
-    case networks.hush:
     case networks.ravencoin:
     case networks.bitcore:
     case networks.zcoin:
@@ -196,6 +195,7 @@ export function normalizeRpcTransaction(tx: RpcTransaction, network: Network): N
     case networks.zclassic:
     case networks.bzedge:
     case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash:
       delete normalizedTx.authdigest;
       delete normalizedTx.valueBalanceZat;
