@@ -10,7 +10,9 @@ export function fromOutputScript(outputScript: Buffer, network: Network): string
   if (isValidNetwork(network) && isZcash(network)) {
     return zcashAddress.fromOutputScript(outputScript, network);
   }
-
+  if (isValidNetwork(network) && isGroestlcoin(network)) {
+    return grsAddress.fromOutputScript(outputScript, network);
+  }
   // We added p2tr payments from our forked bitcoinjs-lib to utxo-lib instead. Our bitcoinjs fork will no longer have
   // p2tr support so utxo-lib should take care of retrieving a p2tr address from outputScript and bitcoinjs-lib can
   // handle the other type of payments.
@@ -26,6 +28,9 @@ export function fromOutputScript(outputScript: Buffer, network: Network): string
 export function toOutputScript(address: string, network: Network): Buffer {
   if (isValidNetwork(network) && isZcash(network)) {
     return zcashAddress.toOutputScript(address, network);
+  }
+  if (isValidNetwork(network) && isGroestlcoin(network)) {
+    return grsAddress.toOutputScript(address, network);
   }
   return bitcoinjs.address.toOutputScript(address, network as bitcoinjs.Network);
 }
