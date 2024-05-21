@@ -4,6 +4,7 @@ import * as varuint from 'varuint-bitcoin';
 import { toTNumber } from './tnumber';
 
 import { networks, Network, getMainnet, isBitcoinGold, isBithereum } from '../networks';
+import * as grsTx from './groestlcoin';
 
 export function varSliceSize(slice: Buffer): number {
   const length = slice.length;
@@ -91,6 +92,14 @@ export class UtxoTransaction<TNumber extends number | bigint = number> extends b
     hashType: number
   ): Buffer {
     switch (getMainnet(this.network)) {
+      case networks.groestlcoin:
+        if ((hashType & UtxoTransaction.SIGHASH_FORKID) > 0) {
+          if (value === undefined) {
+            throw new Error(`must provide value`);
+          }
+          return grsTx.hashForWitnessV0(inIndex, prevoutScript, value, this.addForkId(hashType), super.clone());
+        }
+        return grsTx.hashForSignature(inIndex, prevoutScript, hashType, value, super.clone())
       case networks.zelcash:
       case networks.flux:
       case networks.zero:

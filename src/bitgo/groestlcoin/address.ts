@@ -1,8 +1,9 @@
 import * as assert from 'assert';
 import * as types from 'bitcoinjs-lib/src/types';
-import { crypto as bcrypto, payments, script as bscript } from 'bitcoinjs-lib';
+import { payments, script as bscript } from 'bitcoinjs-lib';
 import { Base58CheckResult } from 'bitcoinjs-lib/src/address';
 import { isGroestlcoin, Network } from '../../networks';
+import { groestl } from './crypto';
 const bs58checkBase = require('bs58check/base');
 const typeforce = require('typeforce');
 const bech32_1 = require('bech32');
@@ -36,7 +37,7 @@ function fromBech32(address) {
 }
 
 export function fromBase58Check(address: string): Base58CheckResult {
-  const payload = bs58checkBase(bcrypto.sha256).decode(address);
+  const payload = bs58checkBase(groestl).decode(address);
   // TODO: 4.0.0, move to "toOutputScript"
   if (payload.length < 21) throw new TypeError(address + ' is too short');
   if (payload.length > 21) throw new TypeError(address + ' is too long');
@@ -50,7 +51,7 @@ export function toBase58Check(hash: Buffer, version: number): string {
   const payload = Buffer.allocUnsafe(21);
   payload.writeUInt8(version, 0);
   hash.copy(payload, 1);
-  return bs58checkBase(bcrypto.sha256).encode(payload);
+  return bs58checkBase(groestl).encode(payload);
 }
 
 export function fromOutputScript(output: Buffer, network: Network): string {
