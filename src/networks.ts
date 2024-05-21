@@ -34,6 +34,7 @@ const coins = {
   ZEC: 'zec',
   DASH: 'dash',
   DOGE: 'doge',
+  GRS: 'grs',
 } as const;
 
 export type NetworkName =
@@ -80,7 +81,8 @@ export type NetworkName =
   | 'raptoreum'
   | 'vertcoin'
   | 'fluxtestnet'
-  | 'clore';
+  | 'clore'
+  | 'groestlcoin';
 
 export type Network = {
   messagePrefix: string;
@@ -618,6 +620,18 @@ export const networks: Record<NetworkName, Network> = {
     wif: 0x70,
     coin: coins.BTC
   },
+  groestlcoin: {
+    messagePrefix: '\x1cGroestlCoin Signed Message:\n',
+    bech32: 'grs',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x24,
+    scriptHash: 0x05,
+    wif: 0x80,
+    coin: coins.GRS,
+  },
 };
 
 /**
@@ -756,6 +770,8 @@ export function getMainnet(network: Network): Network {
     case networks.clore:
       return networks.clore;
     
+    case networks.groestlcoin:
+      return networks.groestlcoin;
   }
   throw new TypeError(`invalid network`);
 }
@@ -909,6 +925,14 @@ export function isZcash(network: Network): boolean {
     networks.safecoin,
   ];
   return zcashMainnets.includes(getMainnet(network));
+}
+
+/**
+ * @param {Network} network
+ * @returns {boolean} true iff network is litecoin or litecoinTest
+ */
+export function isGroestlcoin(network: Network): boolean {
+  return getMainnet(network) === networks.groestlcoin;
 }
 
 /**

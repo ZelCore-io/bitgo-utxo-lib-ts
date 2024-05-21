@@ -2,7 +2,8 @@ import * as bitcoinjs from 'bitcoinjs-lib';
 import { Base58CheckResult, Bech32Result } from 'bitcoinjs-lib/src/address';
 
 import * as zcashAddress from '../src/bitgo/zcash/address';
-import { isValidNetwork, isZcash, Network } from './networks';
+import * as grsAddress from '../src/bitgo/groestlcoin/address';
+import { isValidNetwork, isZcash, isGroestlcoin, Network } from './networks';
 import { p2trPayments } from './index';
 
 export function fromOutputScript(outputScript: Buffer, network: Network): string {
@@ -33,12 +34,18 @@ export function toBase58Check(hash: Buffer, version: number, network: Network): 
   if (isValidNetwork(network) && isZcash(network)) {
     return zcashAddress.toBase58Check(hash, version);
   }
+  if (isValidNetwork(network) && isGroestlcoin(network)) {
+    return grsAddress.toBase58Check(hash, version);
+  }
   return bitcoinjs.address.toBase58Check(hash, version);
 }
 
 export function fromBase58Check(address: string, network: Network): Base58CheckResult {
   if (isValidNetwork(network) && isZcash(network)) {
     return zcashAddress.fromBase58Check(address);
+  }
+  if (isValidNetwork(network) && isGroestlcoin(network)) {
+    return grsAddress.fromBase58Check(address);
   }
   return bitcoinjs.address.fromBase58Check(address);
 }
