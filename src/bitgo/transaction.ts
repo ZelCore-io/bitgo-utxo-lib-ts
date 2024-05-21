@@ -61,6 +61,7 @@ export function createTransactionFromBuffer<TNumber extends number | bigint = nu
     case networks.raptoreum:
     case networks.vertcoin:
     case networks.clore:
+    case networks.groestlcoin:
     case networks.ecash:
       return UtxoTransaction.fromBuffer<TNumber>(buf, false, amountType, network);
     case networks.litecoin:
@@ -400,6 +401,7 @@ export function createTransactionBuilderForNetwork<TNumber extends number | bigi
     case networks.raptoreum:
     case networks.vertcoin:
     case networks.clore:
+    case networks.groestlcoin:
     case networks.ecash: {
       txb = new UtxoTransactionBuilder<TNumber>(network);
       break;
@@ -459,6 +461,7 @@ export function createTransactionBuilderFromTransaction<TNumber extends number |
     case networks.raptoreum:
     case networks.vertcoin:
     case networks.clore:
+    case networks.groestlcoin:
     case networks.ecash:
       return UtxoTransactionBuilder.fromTransaction<TNumber>(tx, undefined, prevOutputs);
     case networks.litecoin:
