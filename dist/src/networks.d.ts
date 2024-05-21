@@ -1,4 +1,4 @@
-export declare type NetworkName = 'bitcoin' | 'testnet' | 'bitcoincash' | 'bitcoincashTestnet' | 'ecash' | 'ecashTest' | 'bitcoingold' | 'bitcoingoldTestnet' | 'bitcoinsv' | 'bitcoinsvTestnet' | 'dash' | 'dashTest' | 'dogecoin' | 'dogecoinTest' | 'litecoin' | 'litecoinTest' | 'zcash' | 'zcashTest' | 'bithereum' | 'safecoin' | 'komodo' | 'zelcash' | 'flux' | 'zero' | 'snowgem' | 'gemlink' | 'commercium' | 'zclassic' | 'bzedge' | 'genesis' | 'bitcoinzero' | 'bitcoinz' | 'hush' | 'ravencoin' | 'bitcore' | 'zcoin' | 'axe' | 'digibyte' | 'sinovate' | 'ilcoin' | 'raptoreum' | 'vertcoin' | 'fluxtestnet' | 'clore';
+export declare type NetworkName = 'bitcoin' | 'testnet' | 'bitcoincash' | 'bitcoincashTestnet' | 'ecash' | 'ecashTest' | 'bitcoingold' | 'bitcoingoldTestnet' | 'bitcoinsv' | 'bitcoinsvTestnet' | 'dash' | 'dashTest' | 'dogecoin' | 'dogecoinTest' | 'litecoin' | 'litecoinTest' | 'zcash' | 'zcashTest' | 'bithereum' | 'safecoin' | 'komodo' | 'zelcash' | 'flux' | 'zero' | 'snowgem' | 'gemlink' | 'commercium' | 'zclassic' | 'bzedge' | 'genesis' | 'bitcoinzero' | 'bitcoinz' | 'hush' | 'ravencoin' | 'bitcore' | 'zcoin' | 'axe' | 'digibyte' | 'sinovate' | 'ilcoin' | 'raptoreum' | 'vertcoin' | 'fluxtestnet' | 'clore' | 'groestlcoin';
 export declare type Network = {
     messagePrefix: string;
     pubKeyHash: number;
@@ -109,6 +109,11 @@ export declare function isLitecoin(network: Network): boolean;
  * @returns {boolean} true iff network is zcash or zcashTest
  */
 export declare function isZcash(network: Network): boolean;
+/**
+ * @param {Network} network
+ * @returns {boolean} true iff network is litecoin or litecoinTest
+ */
+export declare function isGroestlcoin(network: Network): boolean;
 /**
  * @param {unknown} network
  * @returns {boolean} returns true iff network is any of the network stated in the argument

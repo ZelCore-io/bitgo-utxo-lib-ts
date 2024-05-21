@@ -1,0 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.groestl = void 0;
+const groestlhash = require('groestl-hash-js');
+function groestl(buffer) {
+    return Buffer.from(groestlhash.groestl_2(buffer, 1, 3), 'hex');
+}
+exports.groestl = groestl;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY3J5cHRvLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL2JpdGdvL2dyb2VzdGxjb2luL2NyeXB0by50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSxNQUFNLFdBQVcsR0FBRyxPQUFPLENBQUMsaUJBQWlCLENBQUMsQ0FBQTtBQUU5QyxTQUFnQixPQUFPLENBQUMsTUFBTTtJQUM1QixPQUFPLE1BQU0sQ0FBQyxJQUFJLENBQUMsV0FBVyxDQUFDLFNBQVMsQ0FBQyxNQUFNLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQyxFQUFFLEtBQUssQ0FBQyxDQUFDO0FBQ2pFLENBQUM7QUFGRCwwQkFFQyIsInNvdXJjZXNDb250ZW50IjpbImNvbnN0IGdyb2VzdGxoYXNoID0gcmVxdWlyZSgnZ3JvZXN0bC1oYXNoLWpzJylcclxuXHJcbmV4cG9ydCBmdW5jdGlvbiBncm9lc3RsKGJ1ZmZlcikge1xyXG4gIHJldHVybiBCdWZmZXIuZnJvbShncm9lc3RsaGFzaC5ncm9lc3RsXzIoYnVmZmVyLCAxLCAzKSwgJ2hleCcpO1xyXG59Il19
