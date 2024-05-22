@@ -7,7 +7,7 @@ import { KeyTriple } from '../../../src/testutil';
 import { TxOutPoint, UtxoTransaction, ChainCode, RootWalletKeys, WalletUnspent, KeyName, Tuple } from '../../../src/bitgo';
 export declare const scriptTypesSingleSig: readonly ["p2pkh", "p2wkh"];
 export declare type ScriptTypeSingleSig = (typeof scriptTypesSingleSig)[number];
-export declare const scriptTypes: ("p2pkh" | "p2wkh" | "p2sh" | "p2shP2wsh" | "p2wsh" | "p2tr" | "p2trMusig2")[];
+export declare const scriptTypes: ("p2pkh" | "p2sh" | "p2shP2wsh" | "p2wsh" | "p2tr" | "p2trMusig2" | "p2wkh")[];
 export declare type ScriptType = ScriptType2Of3 | ScriptTypeSingleSig;
 declare type Network = utxolib.Network;
 export declare function isSupportedDepositType(network: Network, scriptType: ScriptType): boolean;
