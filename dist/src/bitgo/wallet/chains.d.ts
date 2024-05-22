@@ -18,7 +18,7 @@ export declare const chainCodesP2shP2wsh: readonly [10, 11];
 export declare const chainCodesP2wsh: readonly [20, 21];
 export declare const chainCodesP2tr: readonly [30, 31];
 export declare const chainCodesP2trMusig2: readonly [40, 41];
-export declare const chainCodes: (0 | 30 | 40 | 1 | 10 | 11 | 20 | 21 | 31 | 41)[];
+export declare const chainCodes: (0 | 20 | 1 | 21 | 10 | 11 | 30 | 31 | 40 | 41)[];
 export declare type ChainCode = (typeof chainCodes)[number];
 export declare function isChainCode(n: unknown): n is ChainCode;
 /**
