@@ -2,7 +2,7 @@ import * as bitcoinjs from 'bitcoinjs-lib';
 import { Base58CheckResult, Bech32Result } from 'bitcoinjs-lib/src/address';
 
 import * as zcashAddress from '../src/bitgo/zcash/address';
-import * as grsAddress from '../src/bitgo/groestlcoin/address';
+import * as grsAddress from 'groestlcoinjs-lib/src/address';
 import { isValidNetwork, isZcash, isGroestlcoin, Network } from './networks';
 import { p2trPayments } from './index';
 
@@ -11,7 +11,7 @@ export function fromOutputScript(outputScript: Buffer, network: Network): string
     return zcashAddress.fromOutputScript(outputScript, network);
   }
   if (isValidNetwork(network) && isGroestlcoin(network)) {
-    return grsAddress.fromOutputScript(outputScript, network);
+    return grsAddress.fromOutputScript(outputScript);
   }
   // We added p2tr payments from our forked bitcoinjs-lib to utxo-lib instead. Our bitcoinjs fork will no longer have
   // p2tr support so utxo-lib should take care of retrieving a p2tr address from outputScript and bitcoinjs-lib can
@@ -30,7 +30,7 @@ export function toOutputScript(address: string, network: Network): Buffer {
     return zcashAddress.toOutputScript(address, network);
   }
   if (isValidNetwork(network) && isGroestlcoin(network)) {
-    return grsAddress.toOutputScript(address, network);
+    return grsAddress.toOutputScript(address);
   }
   return bitcoinjs.address.toOutputScript(address, network as bitcoinjs.Network);
 }
@@ -40,7 +40,7 @@ export function toBase58Check(hash: Buffer, version: number, network: Network): 
     return zcashAddress.toBase58Check(hash, version);
   }
   if (isValidNetwork(network) && isGroestlcoin(network)) {
-    return grsAddress.toBase58Check(hash, version);
+    return grsAddress.toBase58GrsCheck(hash, version);
   }
   return bitcoinjs.address.toBase58Check(hash, version);
 }
@@ -50,7 +50,7 @@ export function fromBase58Check(address: string, network: Network): Base58CheckR
     return zcashAddress.fromBase58Check(address);
   }
   if (isValidNetwork(network) && isGroestlcoin(network)) {
-    return grsAddress.fromBase58Check(address);
+    return grsAddress.fromBase58GrsCheck(address);
   }
   return bitcoinjs.address.fromBase58Check(address);
 }
