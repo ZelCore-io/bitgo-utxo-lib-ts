@@ -61,7 +61,6 @@
     "ecpair": "https://github.com/ZelCore-io/ecpair",
     "elliptic": "^6.5.2",
     "fastpriorityqueue": "^0.7.1",
-    "groestl-hash-js": "https://github.com/zelcore-io/groestl-hash-js",
     "groestlcoinjs-lib": "^6.1.5",
     "typeforce": "^1.11.3",
     "varuint-bitcoin": "^1.1.2"
