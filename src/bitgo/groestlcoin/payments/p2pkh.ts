@@ -4,7 +4,8 @@ import * as bscript from 'bitcoinjs-lib/src/script';
 import { isPoint, typeforce as typef } from 'bitcoinjs-lib/src/types';
 import { Payment, PaymentOpts, StackFunction } from './index';
 import * as lazy from 'bitcoinjs-lib/src/payments/lazy';
-import * as bs58check from 'bs58check';
+import * as bs58checkBase from 'bs58check/base';
+import { groestl } from '../crypto';
 const OPS = bscript.OPS;
 
 // input: {signature} {pubkey}
@@ -37,7 +38,7 @@ export function p2pkh(a: Payment, opts?: PaymentOpts): Payment {
   );
 
   const _address = lazy.value(() => {
-    const payload = bs58check.decode(a.address!);
+    const payload = bs58checkBase(groestl).decode(a.address!);
     const version = payload.readUInt8(0);
     const hash = payload.slice(1);
     return { version, hash };
@@ -55,7 +56,7 @@ export function p2pkh(a: Payment, opts?: PaymentOpts): Payment {
     const payload = Buffer.allocUnsafe(21);
     payload.writeUInt8(network.pubKeyHash, 0);
     o.hash.copy(payload, 1);
-    return bs58check.encode(payload);
+    return  bs58checkBase(groestl).encode(payload);
   });
   lazy.prop(o, 'hash', () => {
     if (a.output) return a.output.slice(3, 23);
