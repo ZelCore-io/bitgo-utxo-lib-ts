@@ -923,6 +923,7 @@ export function isZcash(network: Network): boolean {
     networks.bitcoinz,
     networks.komodo,
     networks.safecoin,
+    networks.hush,
   ];
   return zcashMainnets.includes(getMainnet(network));
 }
