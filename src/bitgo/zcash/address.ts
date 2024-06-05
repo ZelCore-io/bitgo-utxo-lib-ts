@@ -2,13 +2,13 @@ import * as assert from 'assert';
 import { payments } from 'bitcoinjs-lib';
 import * as types from 'bitcoinjs-lib/src/types';
 import { Base58CheckResult } from 'bitcoinjs-lib/src/address';
-import { isZcash, Network } from '../../networks';
+import { isZcash, Network, isZcash8BitUnit } from '../../networks';
 const bs58check = require('bs58check');
 const typeforce = require('typeforce');
 
-export function fromBase58Check(address: string): Base58CheckResult {
+export function fromBase58Check(address: string, network: Network): Base58CheckResult {
   const payload = bs58check.decode(address);
-  const version = payload.readUInt16BE(0);
+  const version = isZcash8BitUnit(network) ? payload.readUInt8(0) : payload.readUInt16BE(0);
   const hash = payload.slice(2);
   return { version, hash };
 }
@@ -42,7 +42,7 @@ export function fromOutputScript(outputScript: Buffer, network: Network): string
 
 export function toOutputScript(address: string, network: Network): Buffer {
   assert(isZcash(network));
-  const { version, hash } = fromBase58Check(address);
+  const { version, hash } = fromBase58Check(address, network);
   if (version === network.pubKeyHash) {
     return payments.p2pkh({ hash }).output as Buffer;
   }
