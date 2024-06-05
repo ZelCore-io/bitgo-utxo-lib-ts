@@ -111,6 +111,11 @@ export declare function isLitecoin(network: Network): boolean;
 export declare function isZcash(network: Network): boolean;
 /**
  * @param {Network} network
+ * @returns {boolean} true if network is zcash 8 bit unit network
+ */
+export declare function isZcash8BitUnit(network: Network): boolean;
+/**
+ * @param {Network} network
  * @returns {boolean} true iff network is litecoin or litecoinTest
  */
 export declare function isGroestlcoin(network: Network): boolean;
