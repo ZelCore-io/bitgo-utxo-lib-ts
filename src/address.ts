@@ -47,7 +47,7 @@ export function toBase58Check(hash: Buffer, version: number, network: Network): 
 
 export function fromBase58Check(address: string, network: Network): Base58CheckResult {
   if (isValidNetwork(network) && isZcash(network)) {
-    return zcashAddress.fromBase58Check(address, network);
+    return zcashAddress.fromBase58Check(address);
   }
   if (isValidNetwork(network) && isGroestlcoin(network)) {
     return grsAddress.fromBase58GrsCheck(address);
