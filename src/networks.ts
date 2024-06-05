@@ -930,6 +930,19 @@ export function isZcash(network: Network): boolean {
 
 /**
  * @param {Network} network
+ * @returns {boolean} true if network is zcash 8 bit unit network
+ */
+export function isZcash8BitUnit(network: Network): boolean {
+ const zcash8BitUnitMainnets = [
+    networks.komodo,
+    networks.safecoin,
+    networks.commercium,
+ ];
+  return zcash8BitUnitMainnets.includes(getMainnet(network));
+}
+
+/**
+ * @param {Network} network
  * @returns {boolean} true iff network is litecoin or litecoinTest
  */
 export function isGroestlcoin(network: Network): boolean {
