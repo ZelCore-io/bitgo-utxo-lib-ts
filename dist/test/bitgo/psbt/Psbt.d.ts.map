@@ -1,1 +1,0 @@
-{"version":3,"file":"Psbt.d.ts","sourceRoot":"","sources":["../../../../test/bitgo/psbt/Psbt.ts"],"names":[],"mappings":"AAGA,OAAO,EAEL,aAAa,EAiCd,MAAM,oBAAoB,CAAC;AAoC5B,oBAAY,UAAU,GAAG,QAAQ,GAAG,QAAQ,CAAC;AAC7C,oBAAY,SAAS,GAAG,aAAa,CAAC,cAAc,CAAC;AACrD,oBAAY,mBAAmB,GAAG,UAAU,GAAG,YAAY,GAAG,YAAY,CAAC"}

@@ -13,3 +13,4 @@ lab/
 .vscode/
 .env
 .yarn
+dist/
