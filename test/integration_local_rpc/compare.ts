@@ -69,6 +69,20 @@ export function normalizeParsedTransaction<TNumber extends number | bigint>(
   switch (getMainnet(network)) {
     case networks.bitcoin:
     case networks.bitcoingold:
+    case networks.bithereum:
+    case networks.genesis:
+    case networks.bitcoinzero:
+    case networks.ravencoin:
+    case networks.bitcore:
+    case networks.zcoin:
+    case networks.axe:
+    case networks.digibyte:
+    case networks.sinovate:
+    case networks.ilcoin:
+    case networks.raptoreum:
+    case networks.vertcoin:
+    case networks.clore:
+    case networks.groestlcoin:
     case networks.litecoin:
       normalizedTx.vsize = tx.virtualSize();
       normalizedTx.weight = tx.weight();
@@ -84,6 +98,18 @@ export function normalizeParsedTransaction<TNumber extends number | bigint>(
     case networks.dogecoin:
       normalizedTx.vsize = tx.virtualSize();
       break;
+    case networks.zelcash:
+    case networks.flux:
+    case networks.zero:
+    case networks.snowgem:
+    case networks.safecoin:
+    case networks.komodo:
+    case networks.gemlink:
+    case networks.commercium:
+    case networks.zclassic:
+    case networks.bzedge:
+    case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash:
       const zcashTx = tx as unknown as ZcashTransaction;
       normalizedTx.overwintered = !!zcashTx.overwintered;
@@ -129,6 +155,20 @@ export function normalizeRpcTransaction(tx: RpcTransaction, network: Network): N
     case networks.bitcoinsv:
     case networks.bitcoingold:
     case networks.dogecoin:
+    case networks.bithereum:
+    case networks.genesis:
+    case networks.bitcoinzero:
+    case networks.ravencoin:
+    case networks.bitcore:
+    case networks.zcoin:
+    case networks.axe:
+    case networks.digibyte:
+    case networks.sinovate:
+    case networks.ilcoin:
+    case networks.raptoreum:
+    case networks.vertcoin:
+    case networks.clore:
+    case networks.groestlcoin:
     case networks.ecash:
     case networks.litecoin:
       // this is the normalized hash which is not implemented in utxolib
@@ -144,6 +184,18 @@ export function normalizeRpcTransaction(tx: RpcTransaction, network: Network): N
       delete normalizedTx.proUpRevTx;
       delete normalizedTx.proUpRegTx;
       break;
+    case networks.zelcash:
+    case networks.flux:
+    case networks.zero:
+    case networks.snowgem:
+    case networks.safecoin:
+    case networks.komodo:
+    case networks.gemlink:
+    case networks.commercium:
+    case networks.zclassic:
+    case networks.bzedge:
+    case networks.bitcoinz:
+    case networks.hush:
     case networks.zcash:
       delete normalizedTx.authdigest;
       delete normalizedTx.valueBalanceZat;

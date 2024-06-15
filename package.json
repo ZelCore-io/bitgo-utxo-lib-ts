@@ -39,8 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BitGo/BitGoJS.git",
-    "directory": "modules/utxo-lib"
+    "url": "https://github.com/zelcore-io/bitgo-utxo-lib-ts.git"
   },
   "files": [
     "dist/src"
@@ -59,9 +58,10 @@
     "cashaddress": "^1.1.0",
     "create-hash": "^1.2.0",
     "create-hmac": "^1.1.7",
-    "ecpair": "npm:@bitgo/ecpair@2.1.0-rc.0",
+    "ecpair": "https://github.com/ZelCore-io/ecpair",
     "elliptic": "^6.5.2",
     "fastpriorityqueue": "^0.7.1",
+    "groestlcoinjs-lib": "^6.1.5",
     "typeforce": "^1.11.3",
     "varuint-bitcoin": "^1.1.2"
   },
@@ -74,6 +74,8 @@
     "debug": "^3.1.0",
     "fs-extra": "^9.1.0",
     "mocha": "^9.2.0",
+    "nyc": "^15.1.0",
+    "ts-node": "^10.9.2",
     "typescript": "4.7.4"
   },
   "lint-staged": {

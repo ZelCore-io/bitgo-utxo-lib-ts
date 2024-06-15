@@ -20,6 +20,7 @@ export * from './zcash';
 export * from './tnumber';
 export * from './litecoin';
 export * from './PsbtUtil';
+export * as grs from './groestlcoin';
 import { PsbtInput } from 'bip174/src/lib/interfaces';
 /**
  * alias for PsbtInput type to avoid direct bip174 library dependency by users of the util functions

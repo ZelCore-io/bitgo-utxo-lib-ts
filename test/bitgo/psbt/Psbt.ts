@@ -942,6 +942,37 @@ function testUtxoPsbt(coinNetwork: Network) {
   });
 }
 
-[networks.bitcoin, networks.zcash, networks.dash, networks.dogecoin, networks.litecoin].forEach((coinNetwork) =>
+[
+  networks.bitcoin,
+  networks.zcash,
+  networks.dash,
+  networks.dogecoin,
+  networks.litecoin,
+  networks.bithereum,
+  networks.safecoin,
+  networks.komodo,
+  networks.zelcash,
+  networks.flux,
+  networks.zero,
+  networks.snowgem,
+  networks.gemlink,
+  networks.commercium,
+  networks.zclassic,
+  networks.bzedge,
+  networks.genesis,
+  networks.bitcoinzero,
+  networks.bitcoinz,
+  networks.hush,
+  networks.ravencoin,
+  networks.bitcore,
+  networks.zcoin,
+  networks.axe,
+  networks.digibyte,
+  networks.sinovate,
+  networks.ilcoin,
+  networks.raptoreum,
+  networks.vertcoin,
+  networks.clore,
+].forEach((coinNetwork) =>
   testUtxoPsbt(coinNetwork)
 );

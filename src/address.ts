@@ -2,14 +2,17 @@ import * as bitcoinjs from 'bitcoinjs-lib';
 import { Base58CheckResult, Bech32Result } from 'bitcoinjs-lib/src/address';
 
 import * as zcashAddress from '../src/bitgo/zcash/address';
-import { isValidNetwork, isZcash, Network } from './networks';
+import * as grsAddress from 'groestlcoinjs-lib/src/address';
+import { isValidNetwork, isZcash, isGroestlcoin, Network } from './networks';
 import { p2trPayments } from './index';
 
 export function fromOutputScript(outputScript: Buffer, network: Network): string {
   if (isValidNetwork(network) && isZcash(network)) {
     return zcashAddress.fromOutputScript(outputScript, network);
   }
-
+  if (isValidNetwork(network) && isGroestlcoin(network)) {
+    return grsAddress.fromOutputScript(outputScript);
+  }
   // We added p2tr payments from our forked bitcoinjs-lib to utxo-lib instead. Our bitcoinjs fork will no longer have
   // p2tr support so utxo-lib should take care of retrieving a p2tr address from outputScript and bitcoinjs-lib can
   // handle the other type of payments.
@@ -26,6 +29,9 @@ export function toOutputScript(address: string, network: Network): Buffer {
   if (isValidNetwork(network) && isZcash(network)) {
     return zcashAddress.toOutputScript(address, network);
   }
+  if (isValidNetwork(network) && isGroestlcoin(network)) {
+    return grsAddress.toOutputScript(address);
+  }
   return bitcoinjs.address.toOutputScript(address, network as bitcoinjs.Network);
 }
 
@@ -33,12 +39,18 @@ export function toBase58Check(hash: Buffer, version: number, network: Network): 
   if (isValidNetwork(network) && isZcash(network)) {
     return zcashAddress.toBase58Check(hash, version);
   }
+  if (isValidNetwork(network) && isGroestlcoin(network)) {
+    return grsAddress.toBase58GrsCheck(hash, version);
+  }
   return bitcoinjs.address.toBase58Check(hash, version);
 }
 
 export function fromBase58Check(address: string, network: Network): Base58CheckResult {
   if (isValidNetwork(network) && isZcash(network)) {
-    return zcashAddress.fromBase58Check(address);
+    return zcashAddress.fromBase58Check(address, network);
+  }
+  if (isValidNetwork(network) && isGroestlcoin(network)) {
+    return grsAddress.fromBase58GrsCheck(address);
   }
   return bitcoinjs.address.fromBase58Check(address);
 }
