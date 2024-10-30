@@ -1,6 +1,6 @@
 {
-  "name": "@bitgo/utxo-lib",
-  "version": "9.37.0",
+  "name": "@runonflux/bitgo-utxo-lib",
+  "version": "9.37.2",
   "description": "Client-side Bitcoin JavaScript library",
   "main": "./dist/src/index.js",
   "engines": {
@@ -39,7 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zelcore-io/bitgo-utxo-lib-ts.git"
+    "url": "git+https://github.com/ZelCore-io/bitgo-utxo-lib-ts.git"
   },
   "files": [
     "dist/src"
