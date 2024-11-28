@@ -210,6 +210,11 @@ export function createPsbtFromTransaction(tx: UtxoTransaction<bigint>, prevOuts:
 }
 
 export function getDefaultTransactionVersion(network: Network): number {
+  // Use NU6 version for testnet, activated on mainnet in block 2726400
+  // https://zips.z.cash/zip-0253
+  if (network === networks.zcashTest) {
+    return ZcashTransaction.VERSION4_BRANCH_NU6;
+  }
   switch (getMainnet(network)) {
     case networks.bitcoincash:
     case networks.bitcoinsv:
@@ -229,7 +234,7 @@ export function getDefaultTransactionVersion(network: Network): number {
     case networks.bitcoinz:
     case networks.hush:
     case networks.zcash:
-      return ZcashTransaction.VERSION4_BRANCH_NU5;
+      return ZcashTransaction.VERSION4_BRANCH_NU6;
     default:
       return 1;
   }
@@ -303,7 +308,9 @@ export function setPsbtDefaults(
         ![
           ZcashTransaction.VERSION4_BRANCH_CANOPY,
           ZcashTransaction.VERSION4_BRANCH_NU5,
+          ZcashTransaction.VERSION4_BRANCH_NU6,
           ZcashTransaction.VERSION5_BRANCH_NU5,
+          ZcashTransaction.VERSION5_BRANCH_NU6,
         ].includes(version)
       ) {
         throw new Error(`invalid version`);
