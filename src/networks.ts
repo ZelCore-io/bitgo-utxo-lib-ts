@@ -634,7 +634,7 @@ export const networks: Record<NetworkName, Network> = {
     coin: coins.GRS,
   },
   telestai: {
-    messagePrefix: '\x18Telestai Signed Message:\n',
+    messagePrefix: '\x19Telestai Signed Message:\n',
     bip32: {
       public: 0x0488b21e,
       private: 0x0488ade4
