@@ -972,6 +972,8 @@ function testUtxoPsbt(coinNetwork: Network) {
   networks.ilcoin,
   networks.raptoreum,
   networks.vertcoin,
+  networks.groestlcoin,
+  networks.telestai,
   networks.clore,
 ].forEach((coinNetwork) =>
   testUtxoPsbt(coinNetwork)

@@ -82,7 +82,8 @@ export type NetworkName =
   | 'vertcoin'
   | 'fluxtestnet'
   | 'clore'
-  | 'groestlcoin';
+  | 'groestlcoin'
+  | 'telestai';
 
 export type Network = {
   messagePrefix: string;
@@ -632,6 +633,17 @@ export const networks: Record<NetworkName, Network> = {
     wif: 0x80,
     coin: coins.GRS,
   },
+  telestai: {
+    messagePrefix: '\x18Telestai Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x42,
+    scriptHash: 0x7f,
+    wif: 0x80,
+    coin: coins.BTC
+  },
 };
 
 /**
@@ -772,6 +784,9 @@ export function getMainnet(network: Network): Network {
     
     case networks.groestlcoin:
       return networks.groestlcoin;
+
+    case networks.telestai:
+      return networks.telestai;
   }
   throw new TypeError(`invalid network`);
 }

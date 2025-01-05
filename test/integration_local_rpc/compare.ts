@@ -83,6 +83,7 @@ export function normalizeParsedTransaction<TNumber extends number | bigint>(
     case networks.vertcoin:
     case networks.clore:
     case networks.groestlcoin:
+    case networks.telestai:
     case networks.litecoin:
       normalizedTx.vsize = tx.virtualSize();
       normalizedTx.weight = tx.weight();
@@ -169,6 +170,7 @@ export function normalizeRpcTransaction(tx: RpcTransaction, network: Network): N
     case networks.vertcoin:
     case networks.clore:
     case networks.groestlcoin:
+    case networks.telestai:
     case networks.ecash:
     case networks.litecoin:
       // this is the normalized hash which is not implemented in utxolib
