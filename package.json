@@ -4,8 +4,7 @@
   "description": "Client-side Bitcoin JavaScript library",
   "main": "./dist/src/index.js",
   "engines": {
-    "node": ">=10.22.0 <21",
-    "npm": ">=3.10.10"
+    "node": ">=18",
   },
   "keywords": [
     "bitgo",
