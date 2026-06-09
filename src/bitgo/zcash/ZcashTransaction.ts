@@ -80,6 +80,11 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
     case ZcashTransaction.VERSION4_BRANCH_CANOPY:
       // https://zips.z.cash/zip-0251
       switch (network) {
+        case networks.bitcoinz:
+          // BitcoinZ uses the standard Zcash Canopy consensus branch id
+          // (0xe9ff75a6), NOT the Komodo/Flux family value (0x76b809bb).
+          // Canopy activated on BTCZ mainnet at height 1,735,000 (~Mar 2026).
+          return CANOPY_BRANCH_ID;
         case networks.komodo:
         case networks.safecoin:
         case networks.zelcash:
@@ -87,7 +92,6 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
         case networks.snowgem:
         case networks.gemlink:
         case networks.commercium:
-        case networks.bitcoinz:
         case networks.fluxtestnet:
         case networks.hush:
           return 0x76b809bb;
@@ -110,6 +114,11 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
     case ZcashTransaction.VERSION5_BRANCH_NU6_2:
       // https://zips.z.cash/zip-0252
       switch (network) {
+        case networks.bitcoinz:
+          // BitcoinZ uses the standard Zcash Canopy consensus branch id
+          // (0xe9ff75a6), NOT the Komodo/Flux family value (0x76b809bb).
+          // Canopy activated on BTCZ mainnet at height 1,735,000 (~Mar 2026).
+          return CANOPY_BRANCH_ID;
         case networks.komodo:
         case networks.safecoin:
         case networks.zelcash:
@@ -117,7 +126,6 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
         case networks.snowgem:
         case networks.gemlink:
         case networks.commercium:
-        case networks.bitcoinz:
         case networks.fluxtestnet:
         case networks.hush:
           return 0x76b809bb;
