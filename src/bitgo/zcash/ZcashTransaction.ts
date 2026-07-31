@@ -28,6 +28,9 @@ const NU6_1_BRANCH_ID = 0x4dec4df0;
 // NU6.2 emergency hard fork, activated on mainnet at block 3364600
 // https://github.com/zcash/zcash/releases (zcashd v6.20.0) — re-enables Orchard with a corrected circuit
 const NU6_2_BRANCH_ID = 0x5437f330;
+// NU6.3 network upgrade, activated on mainnet at block 3428143 (28 July 2026)
+// https://zips.z.cash/zip-0258 — deployment of the NU6.3 network upgrade
+const NU6_3_BRANCH_ID = 0x37a5165b;
 
 export class UnsupportedTransactionError extends Error {
   constructor(message: string) {
@@ -41,10 +44,12 @@ export function getDefaultVersionGroupIdForVersion(version: number): number {
     case 450:
     case 455:
     case 457:
+    case 458:
       return SAPLING_VERSION_GROUP_ID;
     case 500:
     case 550:
     case 552:
+    case 553:
       return ZIP225_VERSION_GROUP_ID;
   }
   throw new Error(`no value for version ${version}`);
@@ -112,6 +117,8 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
     case ZcashTransaction.VERSION5_BRANCH_NU6:
     case ZcashTransaction.VERSION4_BRANCH_NU6_2:
     case ZcashTransaction.VERSION5_BRANCH_NU6_2:
+    case ZcashTransaction.VERSION4_BRANCH_NU6_3:
+    case ZcashTransaction.VERSION5_BRANCH_NU6_3:
       // https://zips.z.cash/zip-0252
       switch (network) {
         case networks.bitcoinz:
@@ -137,8 +144,9 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
           return 0x736c627a;
         default:
           // Zcash mainnet (and any network not explicitly listed above).
-          // Pre-NU6.2 transactions keep the NU6.1 branch id; current
-          // (NU6.2 / bare v4-v5) transactions use the NU6.2 branch id.
+          // Pre-NU6.2 transactions keep the NU6.1 branch id, NU6.2-era
+          // transactions keep the NU6.2 branch id; current (NU6.3 / bare
+          // v4-v5) transactions use the NU6.3 branch id.
           if (
             version === ZcashTransaction.VERSION4_BRANCH_NU6 ||
             version === ZcashTransaction.VERSION5_BRANCH_NU6 ||
@@ -147,7 +155,13 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
           ) {
             return NU6_1_BRANCH_ID;
           }
-          return NU6_2_BRANCH_ID;
+          if (
+            version === ZcashTransaction.VERSION4_BRANCH_NU6_2 ||
+            version === ZcashTransaction.VERSION5_BRANCH_NU6_2
+          ) {
+            return NU6_2_BRANCH_ID;
+          }
+          return NU6_3_BRANCH_ID;
       }
   }
   throw new Error(`no value for version ${version}`);
@@ -162,9 +176,11 @@ export class ZcashTransaction<TNumber extends number | bigint = number> extends 
   static VERSION4_BRANCH_NU5 = 450;
   static VERSION4_BRANCH_NU6 = 455;
   static VERSION4_BRANCH_NU6_2 = 457;
+  static VERSION4_BRANCH_NU6_3 = 458;
   static VERSION5_BRANCH_NU5 = 500;
   static VERSION5_BRANCH_NU6 = 550;
   static VERSION5_BRANCH_NU6_2 = 552;
+  static VERSION5_BRANCH_NU6_3 = 553;
 
   // 1 if the transaction is post overwinter upgrade, 0 otherwise
   overwintered = 0;

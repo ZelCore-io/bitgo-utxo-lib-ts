@@ -240,9 +240,9 @@ export function getDefaultTransactionVersion(network: Network): number {
     case networks.hush:
       return ZcashTransaction.VERSION4_BRANCH_NU6;
     case networks.zcash:
-      // NU6.2 emergency hard fork, activated on mainnet at block 3364600.
-      // Testnet (handled above) stays on NU6.1 until its NU6.2 activation height.
-      return ZcashTransaction.VERSION4_BRANCH_NU6_2;
+      // NU6.3 network upgrade, activated on mainnet at block 3428143 (28 July 2026).
+      // Testnet (handled above) stays on NU6.1 until its NU6.3 activation height.
+      return ZcashTransaction.VERSION4_BRANCH_NU6_3;
     default:
       return 1;
   }
@@ -318,9 +318,11 @@ export function setPsbtDefaults(
           ZcashTransaction.VERSION4_BRANCH_NU5,
           ZcashTransaction.VERSION4_BRANCH_NU6,
           ZcashTransaction.VERSION4_BRANCH_NU6_2,
+          ZcashTransaction.VERSION4_BRANCH_NU6_3,
           ZcashTransaction.VERSION5_BRANCH_NU5,
           ZcashTransaction.VERSION5_BRANCH_NU6,
           ZcashTransaction.VERSION5_BRANCH_NU6_2,
+          ZcashTransaction.VERSION5_BRANCH_NU6_3,
         ].includes(version)
       ) {
         throw new Error(`invalid version`);
