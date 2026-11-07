@@ -3,11 +3,23 @@ import * as vectors from './fixtures/vectorsZip0244.json';
 import { UnsupportedTransactionError, ZcashTransaction } from '../../../src/bitgo';
 import { Transaction, networks } from '../../../src';
 
+/*
+ * DRAFT-SPEC VECTORS, KEPT FOR HISTORY.
+ *
+ * ./fixtures/vectorsZip0244.json was generated from a pre-2022 draft of ZIP 244 (see ./fixtures/README.md).
+ * Its txids still match final ZIP 244, so they are still asserted.
+ * Its signature hashes for a transparent input follow the draft signature digest, which omitted hash_type,
+ * amounts_sig_digest and scriptpubkeys_sig_digest and is rejected by the Zcash network. Those columns are no longer
+ * asserted here; the final-spec vectors in ./hashZip0244Final.ts replace them.
+ * The signature hashes for transactions without transparent inputs (transparent_input = null) are the same under
+ * the draft and the final spec, and are still asserted.
+ */
+
 type Vector = [
   tx: string,
   txid: string,
   auth_digest: string,
-  transparent_input: number,
+  transparent_input: number | null,
   script_code: string,
   amount: number,
   sighash_all: string,
@@ -57,6 +69,11 @@ function runVector(v: Vector, i: number) {
       assert.strictEqual(tx.getHash().toString('hex'), txid);
     });
 
+    if (transparentInput !== null) {
+      // draft-spec signature digest, superseded by final ZIP 244 (see the note at the top of this file)
+      return;
+    }
+
     [
       'SIGHASH_ALL',
       'SIGHASH_NONE',
@@ -86,7 +103,7 @@ function runVector(v: Vector, i: number) {
   });
 }
 
-describe('ZcashTransaction ZIP-0244', function () {
+describe('ZcashTransaction ZIP-0244 (pre-2022 draft vectors, kept for history)', function () {
   vectors
     .filter((v) => v.length > 1)
     .forEach((v, i) => {

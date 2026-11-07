@@ -11,6 +11,8 @@ import {
 } from './ZcashTransaction';
 import { UtxoTransactionBuilder } from '../UtxoTransactionBuilder';
 import { toOutputScript } from './address';
+import { setPrevOutputsSource } from './prevOutputsSource';
+import { ZcashPrevOutput } from './hashZip0244';
 
 export class ZcashTransactionBuilder<TNumber extends number | bigint = number> extends UtxoTransactionBuilder<
   TNumber,
@@ -18,6 +20,27 @@ export class ZcashTransactionBuilder<TNumber extends number | bigint = number> e
 > {
   constructor(network: ZcashNetwork) {
     super(network);
+    setPrevOutputsSource(this.tx, () => this.getPrevOutputs());
+  }
+
+  /**
+   * Prevout data (scriptPubKey and value of the spent coin) of every input, as needed by ZIP 244 (v5) signature
+   * hashes. Pass `prevOutScript` and `value` to `addInput()` for every input before signing a v5 transaction.
+   * The scriptPubKey of the input being signed may also be derived during `sign()` (for example p2pkh from the key).
+   */
+  getPrevOutputs(): ZcashPrevOutput<TNumber>[] {
+    const inputs: { prevOutScript?: Buffer; value?: TNumber }[] = (this as any).__INPUTS;
+    return inputs.map((input, i) => {
+      const value = input.value ?? ((this.tx.ins[i] as any)?.value as TNumber | undefined);
+      if (!input.prevOutScript || value === undefined) {
+        throw new Error(
+          `ZIP 244 (v5) signature hash needs the scriptPubKey and value of every input, input ${i} has no ${
+            input.prevOutScript ? 'value' : 'scriptPubKey'
+          }: pass prevOutScript and value to addInput()`
+        );
+      }
+      return { script: input.prevOutScript, value };
+    });
   }
 
   protected createInitialTransaction(network: Network): ZcashTransaction<TNumber> {
@@ -49,14 +72,29 @@ export class ZcashTransactionBuilder<TNumber extends number | bigint = number> e
     });
 
     // Copy inputs
-    transaction.ins.forEach(function (txIn) {
+    transaction.ins.forEach(function (txIn, i) {
       (txb as any).__addInputUnsafe(txIn.hash, txIn.index, {
         sequence: txIn.sequence,
         script: txIn.script,
         witness: txIn.witness,
-        value: (txIn as any).value,
+        value: prevOutput?.[i]?.value ?? (txIn as any).value,
       });
     });
+
+    // Copy prevout data (needed for ZIP 244 signature hashes)
+    const prevOutputs = prevOutput ?? transaction.getPrevOutputs();
+    if (prevOutputs) {
+      if (prevOutputs.length !== transaction.ins.length) {
+        throw new Error(`prevOutputs must match the number of inputs`);
+      }
+      const txbInputs = (txb as any).__INPUTS;
+      prevOutputs.forEach((o, i) => {
+        txbInputs[i].value = o.value;
+        if (!txbInputs[i].prevOutScript) {
+          txbInputs[i].prevOutScript = o.script;
+        }
+      });
+    }
 
     return txb;
   }
@@ -82,6 +120,7 @@ export class ZcashTransactionBuilder<TNumber extends number | bigint = number> e
       case ZcashTransaction.VERSION5_BRANCH_NU6:
       case ZcashTransaction.VERSION5_BRANCH_NU6_2:
       case ZcashTransaction.VERSION5_BRANCH_NU6_3:
+      case ZcashTransaction.VERSION5_BRANCH_NU7:
         this.setVersion(5);
         break;
       default:
@@ -124,11 +163,28 @@ export class ZcashTransactionBuilder<TNumber extends number | bigint = number> e
   }
 
   build(): ZcashTransaction<TNumber> {
-    return super.build() as ZcashTransaction<TNumber>;
+    return this.withPrevOutputs(super.build() as ZcashTransaction<TNumber>);
   }
 
   buildIncomplete(): ZcashTransaction<TNumber> {
-    return super.buildIncomplete() as ZcashTransaction<TNumber>;
+    return this.withPrevOutputs(super.buildIncomplete() as ZcashTransaction<TNumber>);
+  }
+
+  /** Attach the prevout data to a built transaction when every input has it, so it can be hashed directly later. */
+  private withPrevOutputs(tx: ZcashTransaction<TNumber>): ZcashTransaction<TNumber> {
+    if (!tx.getPrevOutputs()) {
+      let prevOutputs: ZcashPrevOutput<TNumber>[] | undefined;
+      try {
+        prevOutputs = this.getPrevOutputs();
+      } catch (e) {
+        // incomplete prevout data is only an error when a v5 signature hash is computed
+        prevOutputs = undefined;
+      }
+      if (prevOutputs) {
+        tx.setPrevOutputs(prevOutputs);
+      }
+    }
+    return tx;
   }
 
   addOutput(scriptPubKey: string | Buffer, value: TNumber): number {
