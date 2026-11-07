@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 9.39.4 (2026-11-07)
+
+### Bug Fixes
+
+- **zcash:** v5 transparent signature hashes now follow the final ZIP 244 (https://zips.z.cash/zip-0244) instead of a pre-2022 draft. `transparent_sig_digest` now commits to `hash_type`, `amounts_sig_digest` and `scriptpubkeys_sig_digest`; `txin_sig_digest` uses the field order prevout, value, scriptPubKey, nSequence; the sequence digest is blanked only for `SIGHASH_ANYONECANPAY`; undefined hash types and `SIGHASH_SINGLE` without a corresponding output are refused. Verified against the official `zcash/zcash-test-vectors` vectors (commit `423d323`): 5/5 txids and 16/16 transparent signature hashes. v4 and earlier signing is unchanged.
+- **zcash:** a v5 signature hash now needs the scriptPubKey and value of every input. New `ZcashTransaction.setPrevOutputs()` / `getPrevOutputs()`; `ZcashTransactionBuilder` supplies them from `addInput(txHash, vout, sequence, prevOutScript, value)`, and `ZcashPsbt` from `witnessUtxo` / `nonWitnessUtxo`. Without them the hash throws instead of using the draft digest.
+
+### Features
+
+- **zcash:** NU7 consensus branch id `0x77190AD9` (https://zips.z.cash/zip-0259) as `ZcashTransaction.VERSION5_BRANCH_NU7` (560). It is now the default branch for bare v5 Zcash transactions (previously NU6.3). v4 defaults are unchanged; `setConsensusBranchId` still overrides.
+
 # [9.37.0](https://github.com/BitGo/BitGoJS/compare/@bitgo/utxo-lib@9.36.1...@bitgo/utxo-lib@9.37.0) (2024-05-08)
 
 ### Features
