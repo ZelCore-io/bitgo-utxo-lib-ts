@@ -8,7 +8,10 @@ const typeforce = require('typeforce');
 import { networks } from '../../networks';
 import { UtxoTransaction, varSliceSize } from '../UtxoTransaction';
 import { fromBufferV4, fromBufferV5, toBufferV4, toBufferV5, VALUE_INT64_ZERO } from './ZcashBufferutils';
-import { getBlake2bHash, getSignatureDigest, getTxidDigest } from './hashZip0244';
+import { getBlake2bHash, getSignatureDigest, getTxidDigest, ZcashPrevOutput } from './hashZip0244';
+import { getPrevOutputsSource } from './prevOutputsSource';
+
+export { ZcashPrevOutput };
 
 const ZERO = Buffer.from('0000000000000000000000000000000000000000000000000000000000000000', 'hex');
 
@@ -31,6 +34,9 @@ const NU6_2_BRANCH_ID = 0x5437f330;
 // NU6.3 network upgrade, activated on mainnet at block 3428143 (28 July 2026)
 // https://zips.z.cash/zip-0258 — deployment of the NU6.3 network upgrade
 const NU6_3_BRANCH_ID = 0x37a5165b;
+// NU7 network upgrade, activated on mainnet at block 3543405 (6 November 2026)
+// https://zips.z.cash/zip-0259 — from NU7, only v5 (and v6) transactions are valid (https://zips.z.cash/zip-2003)
+const NU7_BRANCH_ID = 0x77190ad9;
 
 export class UnsupportedTransactionError extends Error {
   constructor(message: string) {
@@ -50,6 +56,7 @@ export function getDefaultVersionGroupIdForVersion(version: number): number {
     case 550:
     case 552:
     case 553:
+    case 560:
       return ZIP225_VERSION_GROUP_ID;
   }
   throw new Error(`no value for version ${version}`);
@@ -119,6 +126,7 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
     case ZcashTransaction.VERSION5_BRANCH_NU6_2:
     case ZcashTransaction.VERSION4_BRANCH_NU6_3:
     case ZcashTransaction.VERSION5_BRANCH_NU6_3:
+    case ZcashTransaction.VERSION5_BRANCH_NU7:
       // https://zips.z.cash/zip-0252
       switch (network) {
         case networks.bitcoinz:
@@ -145,8 +153,9 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
         default:
           // Zcash mainnet (and any network not explicitly listed above).
           // Pre-NU6.2 transactions keep the NU6.1 branch id, NU6.2-era
-          // transactions keep the NU6.2 branch id; current (NU6.3 / bare
-          // v4-v5) transactions use the NU6.3 branch id.
+          // transactions keep the NU6.2 branch id, NU6.3 / bare v4
+          // transactions use the NU6.3 branch id, and NU7 / bare v5
+          // transactions use the NU7 branch id.
           if (
             version === ZcashTransaction.VERSION4_BRANCH_NU6 ||
             version === ZcashTransaction.VERSION5_BRANCH_NU6 ||
@@ -161,7 +170,14 @@ export function getDefaultConsensusBranchIdForVersion(network: ZcashNetwork, ver
           ) {
             return NU6_2_BRANCH_ID;
           }
-          return NU6_3_BRANCH_ID;
+          if (
+            version === ZcashTransaction.VERSION4_BRANCH_NU6_3 ||
+            version === ZcashTransaction.VERSION5_BRANCH_NU6_3 ||
+            version === 4
+          ) {
+            return NU6_3_BRANCH_ID;
+          }
+          return NU7_BRANCH_ID;
       }
   }
   throw new Error(`no value for version ${version}`);
@@ -181,6 +197,7 @@ export class ZcashTransaction<TNumber extends number | bigint = number> extends 
   static VERSION5_BRANCH_NU6 = 550;
   static VERSION5_BRANCH_NU6_2 = 552;
   static VERSION5_BRANCH_NU6_3 = 553;
+  static VERSION5_BRANCH_NU7 = 560;
 
   // 1 if the transaction is post overwinter upgrade, 0 otherwise
   overwintered = 0;
@@ -189,6 +206,9 @@ export class ZcashTransaction<TNumber extends number | bigint = number> extends 
   // Block height after which this transactions will expire, or 0 to disable expiry
   expiryHeight = 0;
   consensusBranchId: number;
+
+  // scriptPubKey and value of the coin spent by each transparent input, required by ZIP 244 (v5) signature hashes
+  private prevOutputs?: ZcashPrevOutput<TNumber>[];
 
   constructor(public network: ZcashNetwork, tx?: ZcashTransaction<bigint | number>, amountType?: 'bigint' | 'number') {
     super(network, tx, amountType);
@@ -201,6 +221,14 @@ export class ZcashTransaction<TNumber extends number | bigint = number> extends 
 
       if (tx.consensusBranchId !== undefined) {
         consensusBranchId = tx.consensusBranchId;
+      }
+
+      // copy only explicitly set prevout data, not a builder's live source
+      const prevOutputs = tx.prevOutputs;
+      if (prevOutputs) {
+        const toAmount = (v: number | bigint): TNumber =>
+          (amountType === 'bigint' ? BigInt(v) : amountType === 'number' ? Number(v) : v) as TNumber;
+        this.prevOutputs = prevOutputs.map(({ script, value }) => ({ script, value: toAmount(value) }));
       }
     }
     this.consensusBranchId = consensusBranchId ?? getDefaultConsensusBranchIdForVersion(network, this.version);
@@ -377,6 +405,65 @@ export class ZcashTransaction<TNumber extends number | bigint = number> extends 
   }
 
   /**
+   * Set the coin spent by every transparent input (scriptPubKey and value, in input order).
+   * Final ZIP 244 (v5) signature hashes commit to the amounts and scriptPubKeys of all inputs,
+   * so a v5 signature hash cannot be computed without them.
+   * `ZcashTransactionBuilder` supplies them from its inputs; call this when hashing a transaction directly.
+   * Pass `undefined` to clear them.
+   */
+  setPrevOutputs(prevOutputs: ZcashPrevOutput<TNumber>[] | undefined): void {
+    if (prevOutputs === undefined) {
+      this.prevOutputs = undefined;
+      return;
+    }
+    if (!Array.isArray(prevOutputs)) {
+      throw new Error(`prevOutputs must be an array`);
+    }
+    prevOutputs.forEach(({ script, value }, i) => {
+      if (!Buffer.isBuffer(script)) {
+        throw new Error(`prevOutputs[${i}].script must be a Buffer`);
+      }
+      if (!((typeof value === 'number' && Number.isSafeInteger(value)) || typeof value === 'bigint') || value < 0) {
+        throw new Error(`prevOutputs[${i}].value must be a non-negative integer`);
+      }
+    });
+    this.prevOutputs = prevOutputs.map(({ script, value }) => ({ script, value }));
+  }
+
+  /**
+   * @returns the prevout data set with `setPrevOutputs`, or supplied by the `ZcashTransactionBuilder` that owns
+   * this transaction, or undefined.
+   */
+  getPrevOutputs(): ZcashPrevOutput<TNumber>[] | undefined {
+    if (this.prevOutputs) {
+      return this.prevOutputs;
+    }
+    return getPrevOutputsSource(this)?.();
+  }
+
+  /**
+   * Final ZIP 244 signature hash for a v5 transaction.
+   * The `prevOutScript` argument of `hashForSignatureByNetwork` is not used: ZIP 244 commits to the scriptPubKey of
+   * the spent coin (from the prevout data), not to the script code (for P2SH these differ).
+   */
+  private hashForSignatureV5(inIndex: number | undefined, value: bigint | number, hashType: number): Buffer {
+    const prevOutputs = this.getPrevOutputs();
+    if (this.ins.length > 0 && !this.isCoinbase()) {
+      if (!prevOutputs) {
+        throw new Error(
+          'ZIP 244 (v5) signature hash needs the scriptPubKey and value of every input: call setPrevOutputs() on the transaction, or pass prevOutScript and value to ZcashTransactionBuilder.addInput()'
+        );
+      }
+      if (inIndex !== undefined && prevOutputs[inIndex] && BigInt(prevOutputs[inIndex].value) !== BigInt(value)) {
+        throw new Error(
+          `ZIP 244 (v5) signature hash: value ${value} does not match prevOutputs[${inIndex}].value ${prevOutputs[inIndex].value}`
+        );
+      }
+    }
+    return getSignatureDigest(this, inIndex, hashType, prevOutputs ?? []);
+  }
+
+  /**
    * Hash transaction for signing a transparent transaction in Zcash. Protected transactions are not supported.
    * @param inIndex
    * @param prevOutScript
@@ -396,7 +483,7 @@ export class ZcashTransaction<TNumber extends number | bigint = number> extends 
 
     // https://github.com/zcash/zcash/blob/v4.5.1/src/script/interpreter.cpp#L1175
     if (this.version === 5) {
-      return getSignatureDigest(this, inIndex, prevOutScript, value, hashType);
+      return this.hashForSignatureV5(inIndex, value, hashType);
     }
 
     // ZCash amounts are always within Number.MAX_SAFE_INTEGER

@@ -9,6 +9,8 @@ import { Psbt as PsbtBase } from 'bip174';
 import * as types from 'bitcoinjs-lib/src/types';
 import { ValidateSigFunction } from 'bitcoinjs-lib/src/psbt';
 import { ProprietaryKeySubtype, PSBT_PROPRIETARY_IDENTIFIER, withUnsafeNonSegwit } from '../PsbtUtil';
+import { ZcashPrevOutput } from './hashZip0244';
+import { setPrevOutputsSource } from './prevOutputsSource';
 const typeforce = require('typeforce');
 
 const CONSENSUS_BRANCH_ID_KEY = Buffer.concat([
@@ -19,6 +21,38 @@ const CONSENSUS_BRANCH_ID_KEY = Buffer.concat([
 ]);
 
 export class ZcashPsbt extends UtxoPsbt<ZcashTransaction<bigint>> {
+  constructor(opts: PsbtOpts, data: PsbtBase) {
+    super(opts, data);
+    // ZIP 244 (v5) signature hashes commit to the scriptPubKey and value of every input
+    setPrevOutputsSource(this.tx, () => this.getZip244PrevOutputs());
+  }
+
+  /**
+   * @returns the scriptPubKey and value of the coin spent by every input, from `nonWitnessUtxo` or `witnessUtxo`.
+   */
+  getZip244PrevOutputs(): ZcashPrevOutput<bigint>[] {
+    const txInputs = this.txInputs;
+    return this.data.inputs.map((input, i) => {
+      if (input.nonWitnessUtxo) {
+        const utxoTx = ZcashPsbt.transactionFromBuffer(input.nonWitnessUtxo, this.tx.network);
+        if (!txInputs[i].hash.equals(utxoTx.getHash())) {
+          throw new Error(`Non-witness UTXO hash for input #${i} doesn't match the hash specified in the prevout`);
+        }
+        const prevout = utxoTx.outs[txInputs[i].index];
+        if (!prevout) {
+          throw new Error(`Non-witness UTXO for input #${i} has no output ${txInputs[i].index}`);
+        }
+        return { script: prevout.script, value: prevout.value };
+      }
+      if (input.witnessUtxo) {
+        return { script: input.witnessUtxo.script, value: input.witnessUtxo.value };
+      }
+      throw new Error(
+        `ZIP 244 (v5) signature hash needs the scriptPubKey and value of every input, input ${i} has neither nonWitnessUtxo nor witnessUtxo`
+      );
+    });
+  }
+
   protected static transactionFromBuffer(buffer: Buffer, network: Network): ZcashTransaction<bigint> {
     return ZcashTransaction.fromBuffer<bigint>(buffer, false, 'bigint', network);
   }
@@ -118,6 +152,7 @@ export class ZcashPsbt extends UtxoPsbt<ZcashTransaction<bigint>> {
       case ZcashTransaction.VERSION5_BRANCH_NU6:
       case ZcashTransaction.VERSION5_BRANCH_NU6_2:
       case ZcashTransaction.VERSION5_BRANCH_NU6_3:
+      case ZcashTransaction.VERSION5_BRANCH_NU7:
         this.setVersion(5);
         break;
       default:

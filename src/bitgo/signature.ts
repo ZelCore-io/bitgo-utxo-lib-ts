@@ -18,6 +18,28 @@ import { getMainnet, Network, networks } from '../networks';
 import { ecc as eccLib } from '../noble_ecc';
 import { parseSignatureScript2Of3 } from './parseInput';
 import { getTaprootOutputKey } from '../taproot';
+import { ZcashTransaction } from './zcash/ZcashTransaction';
+
+/**
+ * Zcash v5 (ZIP 244) signature hashes commit to the scriptPubKey and value of every input.
+ * Returns a copy of the transaction carrying `prevOutputs` when it has no prevout data of its own.
+ */
+function withZip244PrevOutputs<TNumber extends number | bigint>(
+  transaction: UtxoTransaction<TNumber>,
+  prevOutputs: TxOutput<TNumber>[] | undefined
+): UtxoTransaction<TNumber> {
+  if (
+    prevOutputs &&
+    transaction instanceof ZcashTransaction &&
+    transaction.version === 5 &&
+    !transaction.getPrevOutputs()
+  ) {
+    const clone = transaction.clone<TNumber>();
+    clone.setPrevOutputs(prevOutputs.map(({ script, value }) => ({ script, value })));
+    return clone;
+  }
+  return transaction;
+}
 
 /**
  * Constraints for signature verifications.
@@ -194,7 +216,12 @@ export function getSignatureVerifications<TNumber extends number | bigint>(
       const transactionHash =
         parsedScript.scriptType === 'p2shP2wsh' || parsedScript.scriptType === 'p2wsh'
           ? transaction.hashForWitnessV0(inputIndex, parsedScript.pubScript, amount, hashType)
-          : transaction.hashForSignatureByNetwork(inputIndex, parsedScript.pubScript, amount, hashType);
+          : withZip244PrevOutputs(transaction, prevOutputs).hashForSignatureByNetwork(
+              inputIndex,
+              parsedScript.pubScript,
+              amount,
+              hashType
+            );
       const signedBy = publicKeys.filter((publicKey) =>
         eccLib.verify(
           transactionHash,
